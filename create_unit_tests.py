@@ -1,4 +1,5 @@
 import os
+import sys
 import pprint
 import re
 
@@ -6,13 +7,13 @@ import numpy as np
 from keras import backend as K
 from keras.models import Sequential
 from keras.layers import (
-    Activation, BatchNormalization, Conv2D, Dense, Dropout,
-    ELU, Embedding, Flatten, LocallyConnected1D, LSTM, MaxPooling2D,
+    Activation, BatchNormalization, Conv2D, Dense,
+    ELU, Embedding, Flatten, LSTM, MaxPooling2D, UpSampling2D
 )
 
 from keras2cpp import export_model
 
-np.set_printoptions(precision=25, threshold=np.nan)
+np.set_printoptions(precision=25, threshold=sys.maxsize)
 
 
 os.makedirs('test', exist_ok=True)
@@ -290,6 +291,50 @@ model = Sequential([
     Dense(1)
 ])
 output_testcase(model, test_x, test_y, 'maxpool2d_3x3x3', '1e-6')
+
+
+# UpSampling2D 1x1
+test_x = np.random.rand(10, 10, 10, 1).astype('f')
+test_y = np.random.rand(10, 1).astype('f')
+model = Sequential([
+    UpSampling2D(size=(1, 1), input_shape=(10, 10, 1)),
+    Flatten(),
+    Dense(1)
+])
+output_testcase(model, test_x, test_y, 'up_sampling2d_1x1', '1e-6')
+
+
+# UpSampling2D 2x2
+test_x = np.random.rand(10, 10, 10, 1).astype('f')
+test_y = np.random.rand(10, 1).astype('f')
+model = Sequential([
+    UpSampling2D(size=(2, 2), input_shape=(10, 10, 1)),
+    Flatten(),
+    Dense(1)
+])
+output_testcase(model, test_x, test_y, 'up_sampling2d_2x2', '1e-6')
+
+
+# UpSampling2D 3x2x2
+test_x = np.random.rand(10, 10, 10, 3).astype('f')
+test_y = np.random.rand(10, 1).astype('f')
+model = Sequential([
+    UpSampling2D(size=(2, 2), input_shape=(10, 10, 3)),
+    Flatten(),
+    Dense(1)
+])
+output_testcase(model, test_x, test_y, 'up_sampling2d_3x2x2', '1e-6')
+
+
+# UpSampling2D 3x3x3
+test_x = np.random.rand(10, 10, 10, 3).astype('f')
+test_y = np.random.rand(10, 1).astype('f')
+model = Sequential([
+    UpSampling2D(size=(3, 3), input_shape=(10, 10, 3)),
+    Flatten(),
+    Dense(1)
+])
+output_testcase(model, test_x, test_y, 'up_sampling2d_3x3x3', '1e-6')
 
 
 # LSTM simple 7x20

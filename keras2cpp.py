@@ -10,6 +10,7 @@ from keras.layers import (
     ELU,
     Activation,
     MaxPooling2D,
+    UpSampling2D,
     LSTM,
     Embedding,
     BatchNormalization,
@@ -26,6 +27,7 @@ LAYERS = (
     LSTM,
     Embedding,
     BatchNormalization,
+    UpSampling2D,
 )
 
 ACTIVATIONS = (
@@ -172,6 +174,14 @@ def _(layer, f):
 
     f.write(struct.pack('I', pool_size[0]))
     f.write(struct.pack('I', pool_size[1]))
+
+
+@export.register(UpSampling2D)
+def _(layer, f):
+    size = layer.get_config()['size']
+
+    f.write(struct.pack('I', size[0]))
+    f.write(struct.pack('I', size[1]))
 
 
 @export.register(LSTM)

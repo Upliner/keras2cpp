@@ -21,6 +21,10 @@
 #include "test/maxpool2d_2x2.h"
 #include "test/maxpool2d_3x2x2.h"
 #include "test/maxpool2d_3x3x3.h"
+#include "test/up_sampling2d_1x1.h"
+#include "test/up_sampling2d_2x2.h"
+#include "test/up_sampling2d_3x2x2.h"
+#include "test/up_sampling2d_3x3x3.h"
 #include "test/relu_10.h"
 #include "src/model.h"
 
@@ -143,6 +147,10 @@ int main() {
     test::maxpool2d_2x2();
     test::maxpool2d_3x2x2();
     test::maxpool2d_3x3x3();
+    test::up_sampling2d_1x1();
+    test::up_sampling2d_2x2();
+    test::up_sampling2d_3x2x2();
+    test::up_sampling2d_3x3x3();
     test::lstm_simple_7x20();
     test::lstm_simple_stacked_16x9();
     test::lstm_stacked_64x83();

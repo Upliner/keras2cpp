@@ -9,6 +9,7 @@
 #include "layers/locally2d.h"
 #include "layers/lstm.h"
 #include "layers/maxPooling2d.h"
+#include "layers/upSampling2d.h"
 #include "layers/batchNormalization.h"
 
 namespace keras2cpp {
@@ -38,6 +39,8 @@ namespace keras2cpp {
                 return layers::Embedding::make(file);
             case BatchNormalization:
                 return layers::BatchNormalization::make(file);
+            case UpSampling2D:
+                return layers::UpSampling2D::make(file);
         }
         return nullptr;
     }

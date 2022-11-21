@@ -100,6 +100,7 @@ target_sources(keras2cpp PRIVATE
     src/layers/locally2d.cc
     src/layers/maxPooling2d.cc
     src/layers/batchNormalization.cc
+    src/layers/upSampling2d.cc
     src/model.cc
     src/tensor.cc
     cpp_model.cc
