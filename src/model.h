@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "baseLayer.h"
 namespace keras2cpp {
     class Model : public Layer<Model> {

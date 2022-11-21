@@ -1,4 +1,4 @@
-﻿#include "model.h"
+#include "model.h"
 #include "layers/conv1d.h"
 #include "layers/conv2d.h"
 #include "layers/dense.h"
