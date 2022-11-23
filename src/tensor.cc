@@ -7,12 +7,17 @@ namespace keras2cpp {
         dims_.reserve(rank);
         std::generate_n(std::back_inserter(dims_), rank, [&file] {
             unsigned stride = file;
+            if (stride >= file.size()/sizeof(float))
+                throw KerasException("Cannot read tensor from file");
             kassert(stride > 0);
             return stride;
         });
+        const auto total_size = size();
+        if (total_size >= file.size()/sizeof(float))
+            throw KerasException("Cannot read tensor from file");
 
-        data_.resize(size());
-        file.reads(reinterpret_cast<char*>(data_.data()), sizeof(float) * size());
+        data_.resize(total_size);
+        file.reads(reinterpret_cast<char*>(data_.data()), sizeof(float) * total_size);
     }
 
     Tensor Tensor::unpack(size_t row) const noexcept {
@@ -47,9 +52,10 @@ namespace keras2cpp {
         return *this;
     }
 
-    Tensor Tensor::fma(const Tensor& scale, const Tensor& bias) const noexcept {
-        kassert(dims_ == scale.dims_);
-        kassert(dims_ == bias.dims_);
+    Tensor Tensor::fma(const Tensor& scale, const Tensor& bias) const noexcept{
+        kassert(scale.dims_ == bias.dims_)
+        for (auto i = dims_.end()-1, j = scale.dims_.end()-1; i >= dims_.begin() && j >= scale.dims_.begin(); --i, --j)
+            kassert(*i == *j);
 
         Tensor result;
         result.dims_ = dims_;
@@ -58,8 +64,16 @@ namespace keras2cpp {
         auto k_ = scale.begin();
         auto b_ = bias.begin();
         auto r_ = result.begin();
-        for (auto x_ = begin(); x_ != end();)
-            *(r_++) = *(x_++) * *(k_++) + *(b_++);
+        for (auto x_ = begin(); x_ != end();) {
+            *(r_++) = *(x_++) * *k_ + *b_;
+            ++k_;
+            if (k_ >= scale.end()){
+                k_ = scale.begin();
+                b_ = bias.begin();
+            } else {
+                ++b_;
+            }
+        }
 
         return result;
     }

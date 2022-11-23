@@ -2,7 +2,7 @@
 #include "../baseLayer.h"
 namespace keras2cpp{
     namespace layers{
-        class ELU final : public Layer<ELU> {
+        class ELU final : public UnaryLayer<ELU> {
             float alpha_{1.f};
 
         public:

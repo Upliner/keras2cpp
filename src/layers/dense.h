@@ -2,7 +2,7 @@
 #include "activation.h"
 namespace keras2cpp{
     namespace layers{
-        class Dense final : public Layer<Dense> {
+        class Dense final : public UnaryLayer<Dense> {
             Tensor weights_;
             Tensor biases_;
             Activation activation_;

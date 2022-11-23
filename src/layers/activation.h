@@ -2,7 +2,7 @@
 #include "../baseLayer.h"
 namespace keras2cpp{
     namespace layers{
-        class Activation final : public Layer<Activation> {
+        class Activation final : public UnaryLayer<Activation> {
             enum _Type : unsigned {
                 Linear = 1,
                 Relu = 2,
@@ -15,7 +15,7 @@ namespace keras2cpp{
                 SoftMax = 9
             };
             _Type type_ {Linear};
-        
+
         public:
             Activation(Stream& file);
             Tensor operator()(const Tensor& in) const noexcept override;

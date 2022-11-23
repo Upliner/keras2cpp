@@ -2,7 +2,7 @@
 #include "activation.h"
 namespace keras2cpp{
     namespace layers{
-        class LocallyConnected2D final : public Layer<LocallyConnected2D> {
+        class LocallyConnected2D final : public UnaryLayer<LocallyConnected2D> {
             Tensor weights_;
             Tensor biases_;
             Activation activation_;

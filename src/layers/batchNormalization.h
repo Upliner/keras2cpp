@@ -2,7 +2,7 @@
 #include "../baseLayer.h"
 namespace keras2cpp{
     namespace layers{
-        class BatchNormalization final : public Layer<BatchNormalization> {
+        class BatchNormalization final : public UnaryLayer<BatchNormalization> {
             Tensor weights_;
             Tensor biases_;
         public:

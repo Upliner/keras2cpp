@@ -11,9 +11,10 @@
 #include "layers/maxPooling2d.h"
 #include "layers/upSampling2d.h"
 #include "layers/batchNormalization.h"
+#include "layers/binary.h"
 
 namespace keras2cpp {
-    std::unique_ptr<BaseLayer> Model::make_layer(Stream& file) {
+    std::unique_ptr<Layer> Model::make_layer(Stream& file) {
         switch (static_cast<unsigned>(file)) {
             case Dense:
                 return layers::Dense::make(file);
@@ -41,21 +42,49 @@ namespace keras2cpp {
                 return layers::BatchNormalization::make(file);
             case UpSampling2D:
                 return layers::UpSampling2D::make(file);
+
+            case Add:
+                return layers::Add::make(file);
+            case Multiply:
+                return layers::Multiply::make(file);
+            case Concatenate:
+                return layers::Concatenate::make(file);
+
+            case InputLayerType:
+                return std::make_unique<InputLayer>();
         }
         return nullptr;
     }
 
     Model::Model(Stream& file) {
         auto count = static_cast<unsigned>(file);
+        if (count > file.size()/sizeof(unsigned))
+            throw KerasException("Model file is corrupt");
         layers_.reserve(count);
         for (size_t i = 0; i != count; ++i)
             layers_.push_back(make_layer(file));
     }
 
-    Tensor Model::operator()(const Tensor& in) const noexcept {
-        Tensor out = in;
-        for (auto&& layer : layers_)
-            out = (*layer)(out);
-        return out;
+    Model Model::load(const std::string& filename) {
+        Stream file(filename);
+        return Model(file);
+    }
+
+    void Model::run(MachineState &state) const {
+        for (auto& layer : layers_)
+            layer->run(state);
+    }
+
+    std::unique_ptr<Tensor> Model::calc(const std::vector<const Tensor*> &input) const {
+        MachineState state;
+        state.inputs = input;
+        state.tensors.reserve(layers_.size());
+        state.calculated_tensors.reserve(layers_.size());
+        run(state);
+        return std::move(state.calculated_tensors.back());
+    }
+
+    Tensor Model::operator()(const Tensor &input) const {
+        return *((*this).calc(std::vector<const Tensor*>{&input}).get());
     }
 }

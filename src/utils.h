@@ -1,6 +1,6 @@
 #pragma once
 #include <chrono>
-#include <cmath>	
+#include <cmath>
 #include <fstream>
 #include <functional>
 #include <tuple>
@@ -35,6 +35,11 @@
 #endif
 
 namespace keras2cpp {
+    class KerasException : public std::runtime_error {
+    public:
+        using std::runtime_error::runtime_error;
+    };
+
     template <typename Callable, typename... Args>
     auto timeit(Callable&& callable, Args&&... args) {
         using namespace std::chrono;
@@ -50,11 +55,15 @@ namespace keras2cpp {
     }
     class Stream {
         std::ifstream stream_;
-    
+        size_t size_;
+
     public:
         Stream(const std::string& filename);
         Stream& reads(char*, size_t);
-    
+        size_t size() {
+            return size_;
+        }
+
         template <
             typename T,
             typename = std::enable_if_t<std::is_default_constructible_v<T>>>

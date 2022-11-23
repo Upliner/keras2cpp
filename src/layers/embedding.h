@@ -2,7 +2,7 @@
 #include "../baseLayer.h"
 namespace keras2cpp{
     namespace layers{
-        class Embedding final : public Layer<Embedding> {
+        class Embedding final : public UnaryLayer<Embedding> {
             Tensor weights_;
 
         public:

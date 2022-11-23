@@ -2,6 +2,9 @@
 #include "test/conv_2x2.h"
 #include "test/conv_3x3.h"
 #include "test/conv_3x3x3.h"
+#include "test/conv_2x2_padding.h"
+#include "test/conv_3x3_padding.h"
+#include "test/conv_3x3x3_padding.h"
 #include "test/conv_hard_sigmoid_2x2.h"
 #include "test/conv_sigmoid_2x2.h"
 #include "test/conv_softplus_2x2.h"
@@ -136,6 +139,11 @@ int main() {
     test::conv_2x2();
     test::conv_3x3();
     test::conv_3x3x3();
+    test::conv_2x2_padding();
+    test::conv_3x3();
+    test::conv_3x3_padding();
+    test::conv_3x3x3();
+    test::conv_3x3x3_padding();
     test::elu_10();
     test::relu_10();
     test::dense_relu_10();

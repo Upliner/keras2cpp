@@ -2,7 +2,7 @@
 #include "activation.h"
 namespace keras2cpp{
     namespace layers{
-        class LSTM final : public Layer<LSTM> {
+        class LSTM final : public UnaryLayer<LSTM> {
             Tensor Wi_;
             Tensor Ui_;
             Tensor bi_;
@@ -15,15 +15,15 @@ namespace keras2cpp{
             Tensor Wo_;
             Tensor Uo_;
             Tensor bo_;
-        
+
             Activation inner_activation_;
             Activation activation_;
             bool return_sequences_{false};
-        
+
             std::tuple<Tensor, Tensor>
             step(const Tensor& x, const Tensor& ht_1, const Tensor& ct_1)
                  const noexcept;
-        
+
         public:
             LSTM(Stream& file);
             Tensor operator()(const Tensor& in) const noexcept override;

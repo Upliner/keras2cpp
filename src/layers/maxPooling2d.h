@@ -2,7 +2,7 @@
 #include "../baseLayer.h"
 namespace keras2cpp{
     namespace layers{
-        class MaxPooling2D final : public Layer<MaxPooling2D> {
+        class MaxPooling2D final : public UnaryLayer<MaxPooling2D> {
             unsigned pool_size_y_{0};
             unsigned pool_size_x_{0};
 

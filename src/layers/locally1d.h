@@ -8,7 +8,7 @@
 #include "activation.h"
 namespace keras2cpp{
     namespace layers{
-        class LocallyConnected1D final : public Layer<LocallyConnected1D> {
+        class LocallyConnected1D final : public UnaryLayer<LocallyConnected1D> {
             Tensor weights_;
             Tensor biases_;
             Activation activation_;

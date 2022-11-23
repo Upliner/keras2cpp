@@ -9,7 +9,7 @@
 #include "activation.h"
 namespace keras2cpp{
     namespace layers{
-        class Conv1D final : public Layer<Conv1D> {
+        class Conv1D final : public UnaryLayer<Conv1D> {
             Tensor weights_;
             Tensor biases_;
             Activation activation_;

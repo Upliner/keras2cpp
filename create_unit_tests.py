@@ -173,6 +173,40 @@ model = Sequential([
 output_testcase(model, test_x, test_y, 'conv_3x3x3', '1e-6')
 
 
+# Conv 2x2 with padding
+test_x = np.random.rand(10, 2, 2, 1).astype('f')
+test_y = np.random.rand(10, 1).astype('f')
+model = Sequential([
+    Conv2D(1, (2, 2), input_shape=(2, 2, 1), padding="same"),
+    Flatten(),
+    Dense(1)
+])
+output_testcase(model, test_x, test_y, 'conv_2x2_padding', '1e-6')
+
+
+# Conv 3x3 with padding
+test_x = np.random.rand(10, 3, 3, 1).astype('f').astype('f')
+test_y = np.random.rand(10, 1).astype('f')
+model = Sequential([
+    Conv2D(1, (3, 3), input_shape=(3, 3, 1), padding="same"),
+    Flatten(),
+    Dense(1)
+])
+output_testcase(model, test_x, test_y, 'conv_3x3_padding', '1e-6')
+
+
+# Conv 3x3x3 with padding
+test_x = np.random.rand(10, 10, 10, 3).astype('f')
+test_y = np.random.rand(10, 1).astype('f')
+model = Sequential([
+    Conv2D(3, (3, 3), input_shape=(10, 10, 3), padding="same"),
+    Flatten(),
+    BatchNormalization(),
+    Dense(1)
+])
+output_testcase(model, test_x, test_y, 'conv_3x3x3_padding', '1e-6')
+
+
 # Activation ELU
 test_x = np.random.rand(1, 10).astype('f')
 test_y = np.random.rand(1, 1).astype('f')
